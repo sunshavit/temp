@@ -18,7 +18,6 @@ import {
   removeFromFavorite,
   getFromLocalSroge,
 } from "../actions/FavoriteCitiesAction";
-
 function Home() {
   const currentWeather = useSelector((state) => {
     return state.currentWeather;
@@ -29,13 +28,11 @@ function Home() {
   });
 
   const dispatch = useDispatch();
-  // const [currentWeather, setCurrentWeather] = useState("");
   const [favIcon, setFavIcon] = useState(false);
 
   useEffect(() => {
-    //dispatch(getCurrentWeather(57911, "London UK"));
-    //dispatch(getCurrentFiveDays(57911));
-    dispatch(getFromLocalSroge(JSON.parse(localStorage.getItem("fav"))));
+    dispatch(getCurrentWeather());
+    dispatch(getCurrentFiveDays(328328));
   }, []);
 
   const favoriteOnClick = () => {

@@ -11,6 +11,7 @@ a {
 
 body {
   background-color: rgb(252, 252, 252);
+  font-family: "Montserrat", sans-serif;
 }
 
 .favorites {
@@ -24,20 +25,39 @@ svg {
 }
 
 .sunny {
-  animation: infinite 3s spin ease;
+  animation: infinite 5s spin ease;
 }
 
 @keyframes spin {
   0% {
-    transform: rotate(0) scale(0.5);
-  }
-  50% {
-    transform: scale(0.5);
-  }
-  70% {
-    transform: rotate(360deg) scale(0.5);
+    transform: rotate(0);
   }
   100% {
-    transform: rotate(0) scale(0.5);
+    transform: rotate(360deg);
+  }
+}
+
+#popup {
+  -webkit-box-shadow: 0px 0px 29px -14px rgba(0, 0, 0, 0.8);
+  -moz-box-shadow: 0px 0px 29px -14px rgba(0, 0, 0, 0.8);
+  box-shadow: 0px 0px 29px -14px rgba(0, 0, 0, 0.8);
+  animation: popupAnimation 8.5s ease;
+  transform: translate(-50%, -200px);
+}
+
+@keyframes popupAnimation {
+  0% {
+    transform: translate(-50%, -200px);
+  }
+
+  20% {
+    transform: translate(-50%, -10px);
+  }
+  80% {
+    transform: translate(-50%, -10px);
+  }
+
+  100% {
+    transform: translate(-50%, -200px);
   }
 }

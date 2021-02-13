@@ -90,9 +90,10 @@ export const Storm = () => {
     </svg>
   );
 };
-export const Sunny = () => {
+export const Sunny = ({ animation }) => {
   return (
     <svg
+      className={animation}
       width="50"
       height="50"
       viewBox="0 0 50 50"

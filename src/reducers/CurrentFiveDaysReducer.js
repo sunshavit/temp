@@ -1,4 +1,4 @@
-export const currentFiveDaysReducer = (state = null, action) => {
+export const currentFiveDaysReducer = (state = [], action) => {
   switch (action.type) {
     case "SET_CURRENT_FIVE_DAYS":
       return action.payload;

@@ -26,7 +26,7 @@ const MyCard = (props) => {
 
   const renderIcon = () => {
     if (props.temp > 20) {
-      return <Sunny className="sunny" />;
+      return <Sunny animation={"sunny"} />;
     } else if (props.temp >= 10 && props.temp <= 20) {
       return <Cloudy />;
     } else {
@@ -46,14 +46,16 @@ const MyCard = (props) => {
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
                 {props.mintemp
-                  ? props.mintemp + "c" + "-" + props.maxtemp + "c"
-                  : props.temp + "c"}
+                  ? props.mintemp + "°C" + " - " + props.maxtemp + "°C"
+                  : props.temp + "°C"}
               </Typography>
             </CardContent>
             <Typography gutterBottom variant="h5" component="h2">
-              {moment()
-                .add(props.day + 1, "days")
-                .format("dddd")}
+              {props.day != undefined
+                ? moment()
+                    .add(props.day + 1, "days")
+                    .format("dddd")
+                : props.cityname}
             </Typography>
           </Grid>
         </Grid>
