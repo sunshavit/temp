@@ -11,7 +11,6 @@ export const getCurrentWeather = (
   cityName = "London UK"
 ) => async (dispatch, getState) => {
   try {
-    console.log(ACCUWEATHER_KEY);
     const { data } = await axios.get(
       `${ACCUWEATHER_URL}/currentconditions/v1/${key}?apikey=${process.env.REACT_APP_API_WEATHER_KEY}`
     );

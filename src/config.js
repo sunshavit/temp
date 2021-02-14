@@ -1,6 +1,5 @@
 export const ACCUWEATHER_URL = "https://dataservice.accuweather.com";
 export const ACCUWEATHER_KEY = process.env.REACT_APP_API_WEATHER_KEY;
-console.log(process.env);
 export const UNSPLASH_URL = "https://api.unsplash.com";
 export const SET_BACKGROUND_IMG = "process.env.REACT_APP_API_PHOTOS_KEY";
 export const UNSPLASH_KEY = process.env.REACT_APP_API_PHOTOS_KEY;
