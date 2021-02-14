@@ -5,6 +5,7 @@ import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
+import Switch from "./SwitchTemp";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -15,17 +16,21 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    width: "100%",
   },
 }));
 
 function Nav() {
   const classes = useStyles();
+
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          Weather App
+        <Typography className={classes.title} variant="h6">
+          <Link to="/">Weather App</Link>{" "}
         </Typography>
+        <Switch />
+        {/* <Typography>dasd</Typography> */}
         <Button color="inherit">
           <Link to="/">Home</Link>{" "}
         </Button>

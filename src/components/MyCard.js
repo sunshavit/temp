@@ -7,17 +7,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { Cloudy, Storm, Sunny } from "../Icons";
+
+import { Sunny, Cloudy, Rain, Snow } from "weather-styled-icon";
 import { Grid } from "@material-ui/core";
 import { Today } from "@material-ui/icons";
 import moment from "moment";
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 140,
+    padding: "1rem 2.5rem",
   },
 });
 
@@ -25,41 +23,48 @@ const MyCard = (props) => {
   const today = moment().format("dddd");
 
   const renderIcon = () => {
-    if (props.temp > 20) {
-      return <Sunny animation={"sunny"} />;
-    } else if (props.temp >= 10 && props.temp <= 20) {
-      return <Cloudy />;
+    let mul = 1;
+    let sum = 0;
+    if (props.type === "F") {
+      mul = 9 / 5;
+      sum = 32;
+    }
+    if (props.temp > 20 * mul + sum) {
+      return <Sunny size={0.5} />;
+    } else if (props.temp >= 10 * mul + sum && props.temp <= 20 * mul + sum) {
+      return <Cloudy size={0.5} />;
     } else {
-      return <Storm />;
+      return <Rain size={0.5} />;
     }
   };
+
+  let type = "°C";
+  if (props.type === "F") {
+    type = "F";
+  }
 
   const classes = useStyles();
   return (
     <Card className={classes.root}>
-      <CardActionArea>
-        <Grid container direction="row" justify="center" alignItems="center">
-          <Grid item xs={6}>
-            <div>{renderIcon()}</div>
-          </Grid>
-          <Grid item xs={10}>
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {props.mintemp
-                  ? props.mintemp + "°C" + " - " + props.maxtemp + "°C"
-                  : props.temp + "°C"}
-              </Typography>
-            </CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {props.day != undefined
-                ? moment()
-                    .add(props.day + 1, "days")
-                    .format("dddd")
-                : props.cityname}
-            </Typography>
-          </Grid>
+      <Grid container direction="column" justify="center" alignItems="center">
+        <Grid item xs={12}>
+          {renderIcon()}
         </Grid>
-      </CardActionArea>
+        <Grid item xs={12} style={{ textAlign: "center" }}>
+          <Typography variant="h6">
+            {props.mintemp
+              ? props.mintemp + type + " - " + props.maxtemp + type
+              : props.temp + type}
+          </Typography>
+          <Typography variant="h5">
+            {props.day != undefined
+              ? moment()
+                  .add(props.day + 1, "days")
+                  .format("dddd")
+              : props.cityname}
+          </Typography>
+        </Grid>
+      </Grid>
     </Card>
   );
 };

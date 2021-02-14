@@ -7,6 +7,9 @@ import { getCurrentWeather } from "../actions/CurrentWeatherAction";
 import { getCurrentFiveDays } from "../actions/CurrentFiveDaysAction";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { getBackgroundImage } from "../actions/BackgroundImageAction";
+import { SetErrorOn } from "../actions/ErrorAction";
+import { ACCUWEATHER_KEY, ACCUWEATHER_URL } from "../config";
 
 function Search() {
   const dispatch = useDispatch();
@@ -17,11 +20,11 @@ function Search() {
   const autoCompelet = async (searchTerm) => {
     try {
       const { data } = await axios.get(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=PGXiTxwk7bq7pWCUuL0EtwDboQLUCI9M&q=${searchTerm}`
+        `${ACCUWEATHER_URL}/locations/v1/cities/autocomplete?apikey=${ACCUWEATHER_KEY}&q=${searchTerm}`
       );
       setCitiesList(data);
     } catch (error) {
-      console.log("error");
+      dispatch(SetErrorOn("Something Wrong Please Try Again"));
     }
   };
 
@@ -39,9 +42,14 @@ function Search() {
   };
 
   const handleSubmit = (e, value) => {
-    const [index, cityName] = value.split(".");
-    dispatch(getCurrentWeather(citiesList[index].Key, cityName));
-    dispatch(getCurrentFiveDays(citiesList[index].Key));
+    if (value) {
+      const [index, cityName] = value.split(".");
+      if (cityName) {
+        dispatch(getCurrentWeather(citiesList[index].Key, cityName));
+        dispatch(getCurrentFiveDays(citiesList[index].Key));
+        dispatch(getBackgroundImage(cityName));
+      }
+    }
   };
 
   return (
@@ -53,10 +61,19 @@ function Search() {
           `${index}. ${option.LocalizedName} ${option.Country.LocalizedName}`
       )}
       onChange={handleSubmit}
+      style={{
+        margin: "15px",
+      }}
       renderInput={(params) => (
         <TextField
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            margin: "0",
+            borderRadius: "7px",
+          }}
           {...params}
-          label="Search City"
+          placeholder="Search City"
+          // label={searchTerm===""}"Search City"
           margin="normal"
           variant="outlined"
           onChange={handleChange}
