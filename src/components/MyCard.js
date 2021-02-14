@@ -25,14 +25,25 @@ const MyCard = (props) => {
   const today = moment().format("dddd");
 
   const renderIcon = () => {
-    if (props.temp > 20) {
+    let mul = 1;
+    let sum = 0;
+    if (props.type === "F") {
+      mul = 9 / 5;
+      sum = 32;
+    }
+    if (props.temp > 20 * mul + sum) {
       return <Sunny animation={"sunny"} />;
-    } else if (props.temp >= 10 && props.temp <= 20) {
+    } else if (props.temp >= 10 * mul + sum && props.temp <= 20 * mul + sum) {
       return <Cloudy />;
     } else {
       return <Storm />;
     }
   };
+
+  let type = "°C";
+  if (props.type === "F") {
+    type = "F";
+  }
 
   const classes = useStyles();
   return (
@@ -44,10 +55,10 @@ const MyCard = (props) => {
           </Grid>
           <Grid item xs={10}>
             <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography gutterBottom variant="h6">
                 {props.mintemp
-                  ? props.mintemp + "°C" + " - " + props.maxtemp + "°C"
-                  : props.temp + "°C"}
+                  ? props.mintemp + type + " - " + props.maxtemp + type
+                  : props.temp + type}
               </Typography>
             </CardContent>
             <Typography gutterBottom variant="h5" component="h2">

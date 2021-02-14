@@ -9,7 +9,7 @@ import store from "./store";
 const theme = createMuiTheme({
   palette: {
     primary: {
-      main: "#0b7368",
+      main: "#3b3b3b",
     },
   },
 });

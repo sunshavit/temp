@@ -3,6 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
+body,
+html {
+  height: 100%;
+}
 
 a {
   text-decoration: none;
@@ -10,7 +14,7 @@ a {
 }
 
 body {
-  background-color: rgb(252, 252, 252);
+  background-color: rgb(99, 97, 97);
   font-family: "Montserrat", sans-serif;
 }
 

@@ -7,6 +7,8 @@ import { getCurrentWeather } from "../actions/CurrentWeatherAction";
 import { getCurrentFiveDays } from "../actions/CurrentFiveDaysAction";
 import { useDispatch } from "react-redux";
 import axios from "axios";
+import { getBackgroundImage } from "../actions/BackgroundImageAction";
+import { SetErrorOn } from "../actions/ErrorAction";
 
 function Search() {
   const dispatch = useDispatch();
@@ -17,11 +19,11 @@ function Search() {
   const autoCompelet = async (searchTerm) => {
     try {
       const { data } = await axios.get(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=PGXiTxwk7bq7pWCUuL0EtwDboQLUCI9M&q=${searchTerm}`
+        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU&q=${searchTerm}`
       );
       setCitiesList(data);
     } catch (error) {
-      console.log("error");
+      dispatch(SetErrorOn("Something Wrong Please Try Again"));
     }
   };
 
@@ -39,9 +41,17 @@ function Search() {
   };
 
   const handleSubmit = (e, value) => {
-    const [index, cityName] = value.split(".");
-    dispatch(getCurrentWeather(citiesList[index].Key, cityName));
-    dispatch(getCurrentFiveDays(citiesList[index].Key));
+    console.log(value);
+    console.log(e);
+    if (value) {
+      const [index, cityName] = value.split(".");
+      console.log(index);
+      if (cityName) {
+        dispatch(getCurrentWeather(citiesList[index].Key, cityName));
+        dispatch(getCurrentFiveDays(citiesList[index].Key));
+        dispatch(getBackgroundImage(cityName));
+      }
+    }
   };
 
   return (

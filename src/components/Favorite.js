@@ -17,6 +17,10 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 
 const Favorite = (props) => {
+  const ifCelsius = useSelector((state) => {
+    return state.ifCelsius;
+  });
+
   const favCities = useSelector((state) => {
     return state.favoriteCities;
   });
@@ -27,7 +31,7 @@ const Favorite = (props) => {
     const promisesArray = cities.map((city) => {
       try {
         return axios.get(
-          `http://dataservice.accuweather.com/currentconditions/v1/${city.key}?apikey=PGXiTxwk7bq7pWCUuL0EtwDboQLUCI9M`
+          `http://dataservice.accuweather.com/currentconditions/v1/${city.key}?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU`
         );
       } catch (error) {
         console.log(error);
@@ -47,17 +51,34 @@ const Favorite = (props) => {
   }, []);
 
   return (
-    <Grid>
-      {console.log(favCitiesWithTemp)}
-      <Grid item xs={12}>
-        {favCitiesWithTemp.map((city, i) => (
-          <Grid item xs={3} key={i}>
-            <MyCard
-              temp={city.Temperature.Metric.Value}
-              cityname={city.cityName}
-            />
-          </Grid>
-        ))}
+    <Grid container justify="center" alignItems="center">
+      <Grid
+        item
+        xs={10}
+        style={{
+          backgroundColor: "rgba(255,255,255,0.15)",
+          borderRadius: "25px",
+          padding: "40px",
+          margin: "40px",
+          backdropFilter: "blur(10px)",
+        }}
+      >
+        <Grid container spacing={2}>
+          {console.log(favCitiesWithTemp)}
+          {favCitiesWithTemp.map((city, i) => (
+            <Grid item key={i} xs={8} md={3} lg={3}>
+              <MyCard
+                temp={
+                  ifCelsius
+                    ? city.Temperature.Metric.Value
+                    : Math.floor((city.Temperature.Metric.Value * 9) / 5 + 32)
+                }
+                cityname={city.cityName}
+                type={ifCelsius ? "C" : "F"}
+              />
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </Grid>
   );
