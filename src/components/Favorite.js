@@ -10,10 +10,11 @@ import Search from "./Search";
 import { Box, IconButton } from "@material-ui/core";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import FavoriteIcon from "@material-ui/icons/Favorite";
-import { Sunny } from "../Icons";
+
 import { londonWeather } from "../data";
 import { fiveDays } from "../data";
 import { useSelector } from "react-redux";
+import { ACCUWEATHER_URL, ACCUWEATHER_KEY } from "../config";
 import axios from "axios";
 
 const Favorite = (props) => {
@@ -31,17 +32,18 @@ const Favorite = (props) => {
     const promisesArray = cities.map((city) => {
       try {
         return axios.get(
-          `http://dataservice.accuweather.com/currentconditions/v1/${city.key}?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU`
+          `${ACCUWEATHER_URL}/currentconditions/v1/${city.key}?apikey=${ACCUWEATHER_KEY}`
         );
       } catch (error) {
-        console.log(error);
+        setFavCitiesWithTemp([]);
       }
     });
     const results = await Promise.allSettled(promisesArray);
     const citiesTemp = results.map((city, index) => {
-      console.log(city);
-      const [cityData] = city.value.data;
-      return { ...cityData, cityName: cities[index].cityName };
+      if (city.value) {
+        const [cityData] = city.value.data;
+        return { ...cityData, cityName: cities[index].cityName };
+      }
     });
     setFavCitiesWithTemp(citiesTemp);
   };
@@ -63,21 +65,31 @@ const Favorite = (props) => {
           backdropFilter: "blur(10px)",
         }}
       >
-        <Grid container spacing={2}>
-          {console.log(favCitiesWithTemp)}
-          {favCitiesWithTemp.map((city, i) => (
-            <Grid item key={i} xs={8} md={3} lg={3}>
-              <MyCard
-                temp={
-                  ifCelsius
-                    ? city.Temperature.Metric.Value
-                    : Math.floor((city.Temperature.Metric.Value * 9) / 5 + 32)
-                }
-                cityname={city.cityName}
-                type={ifCelsius ? "C" : "F"}
-              />
-            </Grid>
-          ))}
+        <Grid
+          container
+          spacing={2}
+          container
+          justify="center"
+          alignItems="center"
+        >
+          {favCitiesWithTemp.map(
+            (city, i) =>
+              city && (
+                <Grid item key={i} xs={12} md={5} lg={4}>
+                  <MyCard
+                    temp={
+                      ifCelsius
+                        ? city.Temperature.Metric.Value
+                        : Math.floor(
+                            (city.Temperature.Metric.Value * 9) / 5 + 32
+                          )
+                    }
+                    cityname={city.cityName}
+                    type={ifCelsius ? "C" : "F"}
+                  />
+                </Grid>
+              )
+          )}
         </Grid>
       </Grid>
     </Grid>

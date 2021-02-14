@@ -18,10 +18,15 @@ body {
   font-family: "Montserrat", sans-serif;
 }
 
+.heart {
+  fill: rgb(190, 14, 14, 0.3) !important;
+  transition: all 175ms ease-in;
+}
+.heart:hover {
+  fill: rgb(190, 14, 14, 0.45) !important;
+}
 .favorites {
-  fill: rgb(141, 14, 14) !important;
-  stroke: rgb(102, 102, 102);
-  stroke-width: 1px;
+  fill: rgb(190, 14, 14) !important;
 }
 
 svg {
@@ -63,5 +68,10 @@ svg {
 
   100% {
     transform: translate(-50%, -200px);
+  }
+}
+@media (max-width: 650px) {
+  #main-container {
+    justify-content: center;
   }
 }

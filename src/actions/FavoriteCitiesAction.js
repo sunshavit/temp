@@ -1,6 +1,12 @@
+import {
+  GET_FROM_LOCALSTORGE,
+  REMOVE_FAVORITE,
+  SET_FAVORITE_CITIES,
+} from "../config";
+
 export const addToFavorite = (cityName, key) => async (dispatch, getState) => {
   dispatch({
-    type: "SET_FAVORITE_CITIES",
+    type: SET_FAVORITE_CITIES,
     payload: { cityName, key },
   });
 };
@@ -10,14 +16,14 @@ export const removeFromFavorite = (cityName, key) => async (
   getState
 ) => {
   dispatch({
-    type: "REMOVE_FAVORITE",
+    type: REMOVE_FAVORITE,
     payload: { cityName, key },
   });
 };
 
 export const getFromLocalSroge = (cities) => async (dispatch, getState) => {
   dispatch({
-    type: "GET_FROM_LOCALSTORGE",
+    type: GET_FROM_LOCALSTORGE,
     payload: cities,
   });
 };

@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     flexGrow: 1,
+    width: "100%",
   },
 }));
 
@@ -25,10 +26,11 @@ function Nav() {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          Weather App
+        <Typography className={classes.title} variant="h6">
+          <Link to="/">Weather App</Link>{" "}
         </Typography>
         <Switch />
+        {/* <Typography>dasd</Typography> */}
         <Button color="inherit">
           <Link to="/">Home</Link>{" "}
         </Button>

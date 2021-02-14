@@ -1,13 +1,18 @@
 import axios from "axios";
+import {
+  ACCUWEATHER_URL,
+  ACCUWEATHER_KEY,
+  SET_CURRENT_FIVE_DAYS,
+} from "../config";
 import { SetErrorOn } from "./ErrorAction";
 
 export const getCurrentFiveDays = (key) => async (dispatch, getState) => {
   try {
     const { data } = await axios.get(
-      `http://dataservice.accuweather.com/forecasts/v1/daily/5day/${key}?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU&metric=true`
+      `${ACCUWEATHER_URL}/forecasts/v1/daily/5day/${key}?apikey=${ACCUWEATHER_KEY}&metric=true`
     );
     dispatch({
-      type: "SET_CURRENT_FIVE_DAYS",
+      type: SET_CURRENT_FIVE_DAYS,
       payload: data,
     });
   } catch (error) {

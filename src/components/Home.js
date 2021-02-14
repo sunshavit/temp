@@ -15,6 +15,7 @@ import { getCurrentWeather } from "../actions/CurrentWeatherAction";
 import axios from "axios";
 import { SetErrorOn } from "../actions/ErrorAction";
 import { getCurrentFiveDays } from "../actions/CurrentFiveDaysAction";
+import { ACCUWEATHER_KEY, ACCUWEATHER_URL } from "../config";
 
 const useStyles = makeStyles({
   myStyle: {
@@ -55,7 +56,6 @@ function Home() {
 
   useEffect(() => {
     geoFindMe();
-    // dispatch(getCurrentFiveDays(328328));
   }, []);
 
   useEffect(() => {
@@ -76,7 +76,6 @@ function Home() {
     if (currentWeather) {
       favoriteCities.map((favCity) => {
         if (favCity.key == currentWeather.key) {
-          console.log("object");
           find = true;
         }
       });
@@ -92,33 +91,29 @@ function Home() {
     async function success(position) {
       const latitude = position.coords.latitude;
       const longitude = position.coords.longitude;
-      console.log({ latitude, longitude });
       try {
         const { data } = await axios.get(
-          `http://dataservice.accuweather.com/locations/v1/cities/geoposition/search?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU&q=${latitude}%2C${longitude}`
+          `${ACCUWEATHER_URL}/locations/v1/cities/geoposition/search?apikey=${ACCUWEATHER_KEY}&q=${latitude}%2C${longitude}`
         );
-        // dispatch(
-        //   getCurrentWeather(
-        //     data.Key,
-        //     data.EnglishName + " " + data.Country.EnglishName
-        //   )
-        // );
-        // dispatch(getCurrentFiveDays(data.Key));
+        dispatch(
+          getCurrentWeather(
+            data.Key,
+            data.EnglishName + " " + data.Country.EnglishName
+          )
+        );
+        dispatch(getCurrentFiveDays(data.Key));
       } catch (error) {
-        // dispatch(
-        //   getCurrentWeather(
-        //   )
-        // );
-        // dispatch(getCurrentFiveDays(328328));
+        dispatch(getCurrentWeather());
+        dispatch(getCurrentFiveDays(328328));
       }
     }
 
     function error() {
-      //dispatch(getCurrentWeather());
+      dispatch(getCurrentWeather());
     }
 
     if (!navigator.geolocation) {
-      //dispatch(getCurrentWeather());
+      dispatch(getCurrentWeather());
     } else {
       navigator.geolocation.getCurrentPosition(success, error);
     }
@@ -128,18 +123,21 @@ function Home() {
     <>
       <Background />
       <Grid container justify="center">
-        <Grid className={classes.searchStyle} item xs={4}>
+        <Grid item xs={12} md={4}>
           <Search />
         </Grid>
         <Grid item xs={10} className={classes.myStyle}>
           <Grid container direction="row" justify="center" alignItems="center">
             <Grid item xs={12}>
               <Box
+                id="main-container"
                 display="flex"
                 flexDirection="row"
                 p={3}
                 m={1}
+                alignItems="center"
                 justifyContent="space-between"
+                flexWrap="wrap"
               >
                 <Box p={1}>
                   <MyCard
@@ -159,7 +157,7 @@ function Home() {
                   />
                 </Box>
                 <Box p={1}>
-                  <h2>{currentWeather && currentWeather.cityName}</h2>
+                  <h1>{currentWeather && currentWeather.cityName}</h1>
                 </Box>
                 <Box p={1}>
                   <IconButton onClick={favoriteOnClick} aria-label="favorite">
@@ -177,7 +175,7 @@ function Home() {
             >
               {currentFiveDays &&
                 currentFiveDays.map((option, i) => (
-                  <Grid item key={i} xs={8} md={2} lg={2}>
+                  <Grid item key={i} xs={12} sm={5} md={4} lg={2}>
                     <MyCard
                       maxtemp={
                         ifCelsius
@@ -195,8 +193,8 @@ function Home() {
                       }
                       temp={
                         ifCelsius
-                          ? option.Temperature.Maximum.Value
-                          : (option.Temperature.Maximum.Value * 9) / 5 + 32
+                          ? option.Temperature.Minimum.Value
+                          : (option.Temperature.Minimum.Value * 9) / 5 + 32
                       }
                       type={ifCelsius ? "C" : "F"}
                       day={i}

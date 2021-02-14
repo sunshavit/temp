@@ -1,4 +1,9 @@
 import axios from "axios";
+import {
+  ACCUWEATHER_KEY,
+  ACCUWEATHER_URL,
+  SET_CURRENT_WEATHER,
+} from "../config";
 import { SetErrorOn } from "./ErrorAction";
 
 export const getCurrentWeather = (
@@ -7,12 +12,11 @@ export const getCurrentWeather = (
 ) => async (dispatch, getState) => {
   try {
     const { data } = await axios.get(
-      `http://dataservice.accuweather.com/currentconditions/v1/${key}?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU`
+      `${ACCUWEATHER_URL}/currentconditions/v1/${key}?apikey=${ACCUWEATHER_KEY}`
     );
     const item = data[0];
-    console.log(key);
     dispatch({
-      type: "SET_CURRENT_WEATHER",
+      type: SET_CURRENT_WEATHER,
       payload: { ...item, cityName, key },
     });
   } catch (error) {

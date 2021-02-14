@@ -9,6 +9,7 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import { getBackgroundImage } from "../actions/BackgroundImageAction";
 import { SetErrorOn } from "../actions/ErrorAction";
+import { ACCUWEATHER_KEY, ACCUWEATHER_URL } from "../config";
 
 function Search() {
   const dispatch = useDispatch();
@@ -19,7 +20,7 @@ function Search() {
   const autoCompelet = async (searchTerm) => {
     try {
       const { data } = await axios.get(
-        `http://dataservice.accuweather.com/locations/v1/cities/autocomplete?apikey=uaA6izrpcMjX1C326nXe0KAMX08ZxFwU&q=${searchTerm}`
+        `${ACCUWEATHER_URL}/locations/v1/cities/autocomplete?apikey=${ACCUWEATHER_KEY}&q=${searchTerm}`
       );
       setCitiesList(data);
     } catch (error) {
@@ -41,11 +42,8 @@ function Search() {
   };
 
   const handleSubmit = (e, value) => {
-    console.log(value);
-    console.log(e);
     if (value) {
       const [index, cityName] = value.split(".");
-      console.log(index);
       if (cityName) {
         dispatch(getCurrentWeather(citiesList[index].Key, cityName));
         dispatch(getCurrentFiveDays(citiesList[index].Key));
@@ -63,10 +61,19 @@ function Search() {
           `${index}. ${option.LocalizedName} ${option.Country.LocalizedName}`
       )}
       onChange={handleSubmit}
+      style={{
+        margin: "15px",
+      }}
       renderInput={(params) => (
         <TextField
+          style={{
+            backgroundColor: "rgba(255, 255, 255, 1)",
+            margin: "0",
+            borderRadius: "7px",
+          }}
           {...params}
-          label="Search City"
+          placeholder="Search City"
+          // label={searchTerm===""}"Search City"
           margin="normal"
           variant="outlined"
           onChange={handleChange}
