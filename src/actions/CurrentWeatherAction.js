@@ -7,8 +7,8 @@ import {
 import { SetErrorOn } from "./ErrorAction";
 
 export const getCurrentWeather = (
-  key = 328328,
-  cityName = "London UK"
+  key = 215854,
+  cityName = "Tel Aviv Israel"
 ) => async (dispatch, getState) => {
   try {
     const { data } = await axios.get(

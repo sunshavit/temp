@@ -104,7 +104,7 @@ function Home() {
         dispatch(getCurrentFiveDays(data.Key));
       } catch (error) {
         dispatch(getCurrentWeather());
-        dispatch(getCurrentFiveDays(328328));
+        dispatch(getCurrentFiveDays(215854));
       }
     }
 
